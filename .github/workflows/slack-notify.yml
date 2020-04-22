@@ -10,15 +10,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Run a one-line script
-      run: echo Hello, world!
-
-    - name: Notify using 8398a7 library
-      uses: 8398a7/action-slack@v3.0.2
+      
+    - name: Succeeded Check
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+    - name: Failed Check
+      uses: 8398a7/action-slack@v3
       with:
-        status: ${{ job.status }}
-        author_name: 'Build and Push images'
-        fields: commit,message,workflow,repo
+        status: failure
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+    
+    - name: Cancelled Check
+      uses: 8398a7/action-slack@v3
+      with:
+        status: cancelled
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
